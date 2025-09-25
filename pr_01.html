@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Урок 01 — Вводный HTML + Публикация на GitHub Pages</title>
+  <meta name="description" content="Практический урок: подготовка рабочего места, создание первой HTML-страницы, основы VS Code, и пошаговая публикация сайта на GitHub Pages." />
+  <style>
+    :root{
+      --bg: #0b0c0f;
+      --muted-bg: #12141a;
+      --text: #e9eef5;
+      --muted: #a9b3c1;
+      --brand: #6ea8fe;
+      --accent: #53df98;
+      --danger: #ff7a7a;
+      --card: #0f1218;
+      --code-bg: #0a0d12;
+      --border: #1f2430;
+      --link: #8ab4ff;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7f9fc; --muted-bg:#fff; --text:#111827; --muted:#4b5563; --brand:#2f6df6; --accent:#0ea5ab; --danger:#d14343; --card:#ffffff; --code-bg:#f3f4f6; --border:#e5e7eb; --link:#1d4ed8;
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; background:var(--bg); color:var(--text); font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+    }
+    header.site{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: saturate(160%) blur(8px);
+      background: color-mix(in lab, var(--muted-bg) 85%, transparent);
+      border-bottom:1px solid var(--border);
+    }
+    .container{max-width:1100px; margin:0 auto; padding:20px}
+    .title{
+      display:flex; gap:16px; align-items:center; flex-wrap:wrap; padding:6px 0 10px;
+    }
+    .logo{
+      width:42px; height:42px; display:grid; place-items:center; border-radius:12px; background:linear-gradient(135deg, var(--brand), var(--accent)); color:white; font-weight:700; box-shadow:var(--shadow)
+    }
+    nav.toc{
+      display:flex; flex-wrap:wrap; gap:10px; padding:10px 0 14px;
+    }
+    nav.toc a{
+      text-decoration:none; color:var(--text); background:var(--card); border:1px solid var(--border);
+      padding:8px 12px; border-radius:10px; transition:.15s transform ease;
+    }
+    nav.toc a:hover{ transform:translateY(-1px); box-shadow:var(--shadow)}
+    main{padding:20px 0 80px}
+    section{
+      background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px; margin:18px 0; box-shadow:var(--shadow)
+    }
+    h1,h2,h3{line-height:1.25}
+    h1{font-size:clamp(26px, 3.4vw, 36px); margin:8px 0 6px}
+    h2{font-size:clamp(22px, 2.6vw, 28px); margin:0 0 12px}
+    h3{font-size:clamp(18px, 2.2vw, 22px); margin:10px 0 8px; color:var(--muted)}
+    p,li{color:var(--text)}
+    .muted{color:var(--muted)}
+    a{color:var(--link)}
+    .grid-2{display:grid; gap:16px}
+    @media (min-width:900px){ .grid-2{grid-template-columns:1fr 1fr} }
+    .kbd{font:600 12px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:.2em .45em; border:1px solid var(--border); border-bottom-width:2px; border-radius:6px; background:var(--code-bg)}
+    pre{margin:0; overflow:auto; background:var(--code-bg); border:1px solid var(--border); border-radius:12px; padding:14px}
+    code{font:13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space:pre}
+    .codeblock{position:relative; margin:10px 0 0}
+    .copy{
+      position:absolute; right:10px; top:10px; border:1px solid var(--border); background:var(--muted-bg); color:var(--text); border-radius:8px; padding:6px 10px; cursor:pointer;
+    }
+    .tip, details{
+      border:1px dashed var(--border); background:var(--muted-bg); padding:12px 14px; border-radius:12px; margin:10px 0;
+    }
+    details summary{cursor:pointer; font-weight:600}
+    .checklist li{margin:.3em 0}
+    table{width:100%; border-collapse:collapse; margin-top:8px}
+    th, td{border:1px solid var(--border); padding:8px; text-align:left}
+    blockquote{margin:10px 0; padding:12px 14px; border-left:4px solid var(--brand); background:var(--muted-bg); border-radius:10px}
+    .pill{
+      display:inline-flex; gap:6px; align-items:center; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:var(--muted-bg); color:var(--muted);
+    }
+    .footer{
+      text-align:center; color:var(--muted); padding:30px 0 60px
+    }
+    .badge{font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid var(--border); background:var(--muted-bg); color:var(--muted)}
+    .hero{
+      background:linear-gradient(180deg, color-mix(in lab, var(--brand) 16%, transparent), transparent 40%);
+      border-radius:14px; padding:14px; margin:0 0 6px;
+    }
+    .inline-img{max-width:100%; border-radius:12px; border:1px solid var(--border)}
+    .anchors{display:flex; flex-wrap:wrap; gap:10px}
+    .anchors a{font-size:14px}
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <div class="title">
+        <div class="logo">WEB</div>
+        <div>
+          <div class="pill">Урок 01 • HTML + GitHub Pages</div>
+          <h1>Создаём первую страницу и публикуем сайт</h1>
+          <p class="muted">Пошаговая инструкция: от настройки компьютера и VS Code до Git, SSH и публикации на GitHub Pages.</p>
+        </div>
+      </div>
+      <nav class="toc" aria-label="Содержание">
+        <a href="#workspace">Подготовка</a>
+        <a href="#vscode">VS Code</a>
+        <a href="#content">Контент</a>
+        <a href="#semantics">Семантика</a>
+        <a href="#nav">Навигация</a>
+        <a href="#devtools">DevTools</a>
+        <a href="#improve">Улучшения</a>
+        <a href="#checklist">Чек-лист</a>
+        <a href="#extras">Доп. задания</a>
+        <a href="#troubles">Проблемы</a>
+        <a href="#github-account">GitHub аккаунт</a>
+        <a href="#ssh">SSH-ключи</a>
+        <a href="#git-terminal">Git и терминал</a>
+        <a href="#pages">Публикация (Pages)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="workspace">
+      <div class="hero">
+        <h2>Подготовка рабочего места <span class="badge">~10 минут</span></h2>
+        <p>Создадим рабочие папки и подготовим редактор к работе.</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <h3>Шаг 1: Создаём рабочую папку</h3>
+          <ul>
+            <li><strong>Windows:</strong> Откройте Проводник → Рабочий стол → ПКМ → <em>Создать → Папку</em> → <code>web-course</code>.</li>
+            <li><strong>Mac:</strong> На рабочем столе ПКМ → <em>Новая папка</em> → <code>web-course</code>.</li>
+          </ul>
+          <h3>Шаг 2: Папка первого проекта</h3>
+          <p>Откройте <code>web-course</code>, создайте внутри папку <code>lesson-01</code>.</p>
+        </div>
+        <div>
+          <h3>Шаг 3: Открываем VS Code</h3>
+          <ol>
+            <li>Запустите Visual Studio Code.</li>
+            <li><span class="kbd">File</span> → <span class="kbd">Open Folder</span> (Файл → Открыть папку).</li>
+            <li>Выберите папку <code>lesson-01</code> и нажмите <em>Выбрать папку</em>.</li>
+          </ol>
+          <details class="tip"><summary>Лайфхак: Live Server</summary>
+            <p>В боковой панели нажмите на иконку расширений → найдите «Live Server» → Установить. Затем ПКМ по <code>index.html</code> → <em>Open with Live Server</em>.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="vscode">
+      <h2>Часть 1: Знакомство с VS Code <span class="badge">~10 минут</span></h2>
+      <pre aria-label="Схема интерфейса"><code>┌─────────────────────────────────────────┐
+│  Меню (File, Edit, View...)            │
+├─────────┬───────────────────────────────┤
+│         │                               │
+│ Боковая │     Область редактора        │
+│ панель  │     (здесь пишем код)        │
+│         │                               │
+│ • Файлы │                               │
+│ • Поиск │                               │
+│         │                               │
+└─────────┴───────────────────────────────┘
+</code></pre>
+
+      <h3>Создаём первый файл</h3>
+      <ol>
+        <li>В боковой панели наведите мышь на <strong>LESSON-01</strong> → нажмите «Новый файл» 📄</li>
+        <li>Введите имя: <code>index.html</code> → Enter</li>
+        <li><strong>Важно:</strong> главная страница всегда называется <code>index.html</code>.</li>
+      </ol>
+
+      <h3>Полезный трюк: Emmet</h3>
+      <p>В новом файле напишите: <code>!</code> и нажмите <span class="kbd">Tab</span> — появится базовая структура HTML.</p>
+      <div class="codeblock">
+        <button class="copy" aria-label="Скопировать код">Копировать</button>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Моя первая страница&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+      </div>
+    </section>
+
+    <section id="content">
+      <h2>Часть 2: Создаём контент страницы <span class="badge">~30 минут</span></h2>
+      <p>Сделаем страницу о фильме «Матрица» (вы можете выбрать свой).</p>
+
+      <h3>Шаг 1: Заголовок и описание</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;body&gt;
+  &lt;h1&gt;Матрица (The Matrix)&lt;/h1&gt;
+  &lt;p&gt;Культовый научно-фантастический фильм 1999 года.&lt;/p&gt;
+&lt;/body&gt;</code></pre>
+      </div>
+
+      <h3>Шаг 2: Открываем в браузере</h3>
+      <ol>
+        <li>В Проводнике/Файндере найдите <code>index.html</code> и дважды кликните.</li>
+        <li>Или используйте <em>Open with Live Server</em>, чтобы видеть изменения без перезагрузки.</li>
+      </ol>
+
+      <h3>Шаг 3: Добавляем информацию</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;h2&gt;Описание&lt;/h2&gt;
+&lt;p&gt;Хакер Нео узнает, что его мир — это компьютерная симуляция, 
+созданная разумными машинами. Он присоединяется к повстанцам, 
+чтобы освободить человечество.&lt;/p&gt;
+
+&lt;h2&gt;Основная информация&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Год выпуска:&lt;/strong&gt; 1999&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Режиссеры:&lt;/strong&gt; Вачовски&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Жанр:&lt;/strong&gt; Научная фантастика, боевик&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Длительность:&lt;/strong&gt; 136 минут&lt;/p&gt;</code></pre>
+      </div>
+
+      <h3>Шаг 4: Списки</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;h2&gt;Главные актеры&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Киану Ривз — Нео&lt;/li&gt;
+  &lt;li&gt;Лоренс Фишберн — Морфеус&lt;/li&gt;
+  &lt;li&gt;Кэрри-Энн Мосс — Тринити&lt;/li&gt;
+  &lt;li&gt;Хьюго Уивинг — Агент Смит&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Почему стоит посмотреть&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Революционные спецэффекты&lt;/li&gt;
+  &lt;li&gt;Глубокий философский сюжет&lt;/li&gt;
+  &lt;li&gt;Культовые сцены боев&lt;/li&gt;
+  &lt;li&gt;Влияние на поп-культуру&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+      </div>
+
+      <h3>Шаг 5: Изображение</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;h2&gt;Постер фильма&lt;/h2&gt;
+&lt;img src="https://upload.wikimedia.org/wikipedia/ru/9/9d/Matrix-DVD.jpg"
+     alt="Постер фильма Матрица" width="300"&gt;</code></pre>
+      </div>
+
+      <h3>Шаг 6: Ссылки</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;h2&gt;Дополнительная информация&lt;/h2&gt;
+&lt;p&gt;
+  &lt;a href="https://www.kinopoisk.ru/film/301/" target="_blank"&gt;
+    Страница на Кинопоиске
+  &lt;/a&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;a href="https://ru.wikipedia.org/wiki/Матрица_(фильм)" target="_blank"&gt;
+    Статья в Википедии
+  &lt;/a&gt;
+&lt;/p&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="semantics">
+      <h2>Часть 3: Семантика и структура <span class="badge">~15 минут</span></h2>
+      <p>Оборачиваем контент в семантические теги.</p>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;body&gt;
+  &lt;header&gt;
+    &lt;h1&gt;Матрица (The Matrix)&lt;/h1&gt;
+    &lt;p&gt;Культовый научно-фантастический фильм 1999 года.&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    &lt;section id="description"&gt;
+      &lt;h2&gt;Описание&lt;/h2&gt;
+      &lt;p&gt;Хакер Нео узнает, что его мир — это компьютерная симуляция...&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section id="info"&gt;
+      &lt;h2&gt;Основная информация&lt;/h2&gt;
+      &lt;p&gt;&lt;strong&gt;Год выпуска:&lt;/strong&gt; 1999&lt;/p&gt;
+      &lt;!-- остальная информация --&gt;
+    &lt;/section&gt;
+
+    &lt;section id="actors"&gt;
+      &lt;h2&gt;Главные актеры&lt;/h2&gt;
+      &lt;ul&gt;&lt;!-- список актеров --&gt;&lt;/ul&gt;
+    &lt;/section&gt;
+
+    &lt;section id="reasons"&gt;
+      &lt;h2&gt;Почему стоит посмотреть&lt;/h2&gt;
+      &lt;ol&gt;&lt;!-- нумерованный список --&gt;&lt;/ol&gt;
+    &lt;/section&gt;
+
+    &lt;section id="poster"&gt;
+      &lt;h2&gt;Постер фильма&lt;/h2&gt;
+      &lt;img src="..." alt="..."&gt;
+    &lt;/section&gt;
+
+    &lt;section id="links"&gt;
+      &lt;h2&gt;Дополнительная информация&lt;/h2&gt;
+      &lt;!-- ссылки --&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;
+    &lt;hr&gt;
+    &lt;p&gt;© 2025 Страница создана в учебных целях&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/body&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="nav">
+      <h2>Часть 4: Добавляем навигацию <span class="badge">~10 минут</span></h2>
+      <p>Меню в <code>&lt;header&gt;</code> + якоря в секциях.</p>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;header&gt;
+  &lt;h1&gt;Матрица (The Matrix)&lt;/h1&gt;
+  &lt;p&gt;Культовый научно-фантастический фильм 1999 года.&lt;/p&gt;
+
+  &lt;nav&gt;
+    &lt;a href="#description"&gt;Описание&lt;/a&gt; | 
+    &lt;a href="#info"&gt;Информация&lt;/a&gt; | 
+    &lt;a href="#actors"&gt;Актеры&lt;/a&gt; | 
+    &lt;a href="#poster"&gt;Постер&lt;/a&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="devtools">
+      <h2>Часть 5: Проверка и отладка <span class="badge">~15 минут</span></h2>
+      <ul>
+        <li><strong>DevTools:</strong> в Chrome нажмите <span class="kbd">F12</span> → вкладки <em>Elements</em>, <em>Console</em>.</li>
+        <li><strong>Ошибки:</strong> 404-для картинок, незакрытые теги, опечатки в атрибутах.</li>
+        <li><strong>Валидация HTML:</strong> откройте <a href="https://validator.w3.org/#validate_by_input" target="_blank" rel="noopener">validator.w3.org</a>, вставьте код и нажмите <em>Check</em>.</li>
+      </ul>
+    </section>
+
+    <section id="improve">
+      <h2>Часть 6: Улучшаем страницу <span class="badge">~10 минут</span></h2>
+      <h3>Таблица</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;section&gt;
+  &lt;h2&gt;Бокс-офис&lt;/h2&gt;
+  &lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;Страна&lt;/th&gt;&lt;th&gt;Сборы&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;США&lt;/td&gt;&lt;td&gt;$171 млн&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;Мир&lt;/td&gt;&lt;td&gt;$467 млн&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/section&gt;</code></pre>
+      </div>
+
+      <h3>Цитата</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;section&gt;
+  &lt;h2&gt;Известная цитата&lt;/h2&gt;
+  &lt;blockquote&gt;
+    "Ты принимаешь синюю таблетку — история заканчивается, 
+    ты просыпаешься и веришь во что хочешь. Принимаешь красную — 
+    и я покажу, как глубока кроличья нора."
+    &lt;br&gt;— &lt;em&gt;Морфеус&lt;/em&gt;
+  &lt;/blockquote&gt;
+&lt;/section&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="checklist">
+      <h2>Итоговый чек-лист</h2>
+      <ul class="checklist">
+        <li>Корректная структура HTML-документа</li>
+        <li>Заголовок страницы в <code>&lt;title&gt;</code></li>
+        <li>Минимум один <code>&lt;h1&gt;</code> и несколько <code>&lt;h2&gt;</code></li>
+        <li>Абзацы <code>&lt;p&gt;</code></li>
+        <li>Списки <code>&lt;ul&gt;</code> и <code>&lt;ol&gt;</code></li>
+        <li>Изображение <code>&lt;img&gt;</code> c корректным <code>alt</code></li>
+        <li>Несколько ссылок <code>&lt;a&gt;</code></li>
+        <li>Семантические теги: <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;footer&gt;</code></li>
+        <li>Навигация с якорями</li>
+      </ul>
+    </section>
+
+    <section id="extras">
+      <h2>Дополнительные задания</h2>
+      <ol>
+        <li>Создайте вторую страницу <code>actors.html</code> с подробной информацией об актёрах; свяжите страницы ссылками.</li>
+        <li>Добавьте видео с YouTube:</li>
+      </ol>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;iframe width="560" height="315" 
+  src="https://www.youtube.com/embed/VIDEO_ID" 
+  frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</code></pre>
+      </div>
+      <p>3) Добавьте простую форму для отзывов:</p>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;form&gt;
+  &lt;label for="name"&gt;Ваше имя:&lt;/label&gt;
+  &lt;input type="text" id="name" name="name"&gt;
+
+  &lt;label for="review"&gt;Ваш отзыв:&lt;/label&gt;
+  &lt;textarea id="review" name="review"&gt;&lt;/textarea&gt;
+
+  &lt;button type="submit"&gt;Отправить&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="troubles">
+      <h2>Частые проблемы и решения</h2>
+      <details open><summary><strong>Проблема:</strong> Русский текст отображается кракозябрами</summary>
+        <p><strong>Решение:</strong> проверьте мета-тег в <code>&lt;head&gt;</code>: <code>&lt;meta charset="UTF-8"&gt;</code>.</p>
+      </details>
+      <details><summary><strong>Проблема:</strong> Картинка не отображается</summary>
+        <ul>
+          <li>Проверьте правильность ссылки и существование файла.</li>
+          <li>Попробуйте картинку из интернета (ПКМ → «Копировать адрес изображения»).</li>
+        </ul>
+      </details>
+      <details><summary><strong>Проблема:</strong> Ссылки не работают</summary>
+        <p>Проверьте кавычки в <code>href="..."</code> и отсутствие пробелов в адресе.</p>
+      </details>
+      <details><summary><strong>Проблема:</strong> Страница не обновляется</summary>
+        <p>Нажмите <span class="kbd">Ctrl</span> + <span class="kbd">F5</span> (полное обновление) или перезапустите Live Server.</p>
+      </details>
+    </section>
+
+    <section id="github-account">
+      <h2>GitHub: регистрация и базовая настройка <span class="badge">подробно</span></h2>
+      <ol>
+        <li>Перейдите на <a href="https://github.com/" target="_blank" rel="noopener">github.com</a> и нажмите <strong>Sign up</strong>.</li>
+        <li>Вводим почту, пароль, имя пользователя (латиницей, без пробелов), подтверждаем почту.</li>
+        <li>После входа откройте <strong>Settings → Profile</strong> и заполните имя/аватар (опционально).</li>
+        <li><strong>Включите 2FA</strong>: Settings → <em>Password and authentication</em> → Two-factor authentication.</li>
+        <li>Запомните свой username — он будет частью адреса сайта на Pages.</li>
+      </ol>
+      <details class="tip"><summary>Почему 2FA важно?</summary>
+        <p>Двухфакторная аутентификация повышает безопасность аккаунта и иногда требуется для push в репозитории организации.</p>
+      </details>
+    </section>
+
+    <section id="ssh">
+      <h2>SSH-ключи: создаём и подключаем</h2>
+      <p class="muted">SSH позволит пушить в GitHub без ввода пароля каждый раз.</p>
+
+      <h3>1) Создать новый ключ</h3>
+      <div class="grid-2">
+        <div>
+          <p><strong>Windows (PowerShell):</strong></p>
+          <div class="codeblock">
+            <button class="copy">Копировать</button>
+            <pre><code>ssh-keygen -t ed25519 -C "ваш_email@example.com"</code></pre>
+          </div>
+          <p>Нажимайте <span class="kbd">Enter</span> для пути по умолчанию, при желании задайте пароль (passphrase).</p>
+        </div>
+        <div>
+          <p><strong>macOS / Linux (Terminal):</strong></p>
+          <div class="codeblock">
+            <button class="copy">Копировать</button>
+            <pre><code>ssh-keygen -t ed25519 -C "ваш_email@example.com"</code></pre>
+          </div>
+          <p>Если ED25519 недоступен, можно использовать RSA (уступает по современности):</p>
+          <div class="codeblock">
+            <button class="copy">Копировать</button>
+            <pre><code>ssh-keygen -t rsa -b 4096 -C "ваш_email@example.com"</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>2) Запускаем ssh-agent и добавляем ключ</h3>
+      <div class="grid-2">
+        <div>
+          <p><strong>Windows (PowerShell, как администратор один раз):</strong></p>
+          <div class="codeblock">
+            <button class="copy">Копировать</button>
+            <pre><code>Get-Service ssh-agent | Set-Service -StartupType Automatic
+Start-Service ssh-agent
+ssh-add $env:USERPROFILE\.ssh\id_ed25519</code></pre>
+          </div>
+        </div>
+        <div>
+          <p><strong>macOS / Linux:</strong></p>
+          <div class="codeblock">
+            <button class="copy">Копировать</button>
+            <pre><code>eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519</code></pre>
+          </div>
+          <details class="tip"><summary>macOS: файл конфигурации для агентa (опционально)</summary>
+            <div class="codeblock">
+              <button class="copy">Копировать</button>
+              <pre><code>mkdir -p ~/.ssh
+printf "Host *\n  AddKeysToAgent yes\n  UseKeychain yes\n  IdentityFile ~/.ssh/id_ed25519\n" &gt;&gt; ~/.ssh/config</code></pre>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <h3>3) Копируем публичный ключ и добавляем в GitHub</h3>
+      <div class="grid-2">
+        <div>
+          <p><strong>Скопировать ключ:</strong></p>
+          <div class="codeblock">
+            <button class="copy">Копировать</button>
+            <pre><code># Windows
+Get-Content $env:USERPROFILE\.ssh\id_ed25519.pub | Set-Clipboard
+
+# macOS / Linux
+pbcopy &lt; ~/.ssh/id_ed25519.pub   # macOS
+xclip -sel clip &lt; ~/.ssh/id_ed25519.pub  # Linux (если установлен xclip)</code></pre>
+          </div>
+        </div>
+        <div>
+          <p><strong>Добавить в GitHub:</strong> GitHub → <em>Settings → SSH and GPG keys → New SSH key</em> → вставьте содержимое <code>id_ed25519.pub</code> → <em>Add SSH key</em>.</p>
+          <p><strong>Проверка:</strong></p>
+          <div class="codeblock">
+            <button class="copy">Копировать</button>
+            <pre><code>ssh -T git@github.com</code></pre>
+          </div>
+          <p>При первом подключении подтвердите fingerprint → должно появиться приветствие.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="git-terminal">
+      <h2>Git и терминал: создаём репозиторий и пушим</h2>
+      <ol>
+        <li>В GitHub нажмите <strong>New repository</strong>, задайте имя (например, <code>web-course-lesson-01</code>), <em>Public</em>, без README (или с — не важно).</li>
+        <li>Скопируйте <strong>SSH</strong>-адрес репозитория вида <code>git@github.com:USERNAME/REPO.git</code>.</li>
+        <li>Откройте терминал в папке проекта <code>lesson-01</code> и выполните:</li>
+      </ol>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code># Укажите имя и почту для коммитов (однократно)
+git config --global user.name "Ваше Имя"
+git config --global user.email "ваш_email@example.com"
+
+# Инициализация и первый коммит
+git init
+git add .
+git commit -m "Урок 01: базовая страница"
+
+# Устанавливаем основную ветку и добавляем удалённый репозиторий
+git branch -M main
+git remote add origin git@github.com:USERNAME/REPO.git
+
+# Публикуем
+git push -u origin main</code></pre>
+      </div>
+      <details class="tip"><summary>Если репозиторий уже содержит README</summary>
+        <p>Сделайте <code>git pull --rebase origin main</code> перед пушем или загрузите файлы через веб-интерфейс.</p>
+      </details>
+    </section>
+
+    <section id="pages">
+      <h2>Публикация сайта через GitHub Pages</h2>
+      <ol>
+        <li>Зайдите в ваш репозиторий → <strong>Settings</strong> → слева <strong>Pages</strong>.</li>
+        <li>В блоке <strong>Build and deployment</strong>:
+          <ul>
+            <li><strong>Source:</strong> <em>Deploy from a branch</em></li>
+            <li><strong>Branch:</strong> <em>main</em> / <em>root</em> (корень) — ваш <code>index.html</code> лежит в корне репозитория.</li>
+          </ul>
+        </li>
+        <li>Сохраните. Вверху появится ссылка на сайт после деплоя (обычно 1–2 минуты).</li>
+        <li>Адрес будет вида: <code>https://USERNAME.github.io/REPO/</code></li>
+      </ol>
+      <details class="tip"><summary>Страница не открывается / 404</summary>
+        <ul>
+          <li>Проверьте, что файл называется <code>index.html</code> и лежит в выбранной ветке/папке.</li>
+          <li>Загляните во вкладку <strong>Actions</strong> — нет ли ошибок билда.</li>
+          <li>Очистите кэш браузера (<span class="kbd">Ctrl</span> + <span class="kbd">F5</span>).</li>
+        </ul>
+      </details>
+    </section>
+
+    <section id="full-example">
+      <h2>Готовый пример страницы «Матрица»</h2>
+      <p class="muted">Скопируйте этот пример в ваш <code>index.html</code> (если хотите сразу получить готовую страницу):</p>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;Моя первая страница — Матрица&lt;/title&gt;
+  &lt;style&gt; body{font-family:system-ui, sans-serif;max-width:900px;margin:0 auto;padding:20px;line-height:1.6}
+  header,main,footer{margin:16px 0} nav a{margin-right:8px} img{border-radius:8px} table{border-collapse:collapse}
+  td,th{border:1px solid #ccc;padding:6px} blockquote{border-left:4px solid #6ea8fe;padding:8px 12px;background:#f6f8fa;border-radius:8px}
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;
+    &lt;h1&gt;Матрица (The Matrix)&lt;/h1&gt;
+    &lt;p&gt;Культовый научно-фантастический фильм 1999 года.&lt;/p&gt;
+    &lt;nav&gt;
+      &lt;a href="#description"&gt;Описание&lt;/a&gt;| 
+      &lt;a href="#info"&gt;Информация&lt;/a&gt;| 
+      &lt;a href="#actors"&gt;Актеры&lt;/a&gt;| 
+      &lt;a href="#poster"&gt;Постер&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    &lt;section id="description"&gt;
+      &lt;h2&gt;Описание&lt;/h2&gt;
+      &lt;p&gt;Хакер Нео узнает, что его мир — это компьютерная симуляция, созданная разумными машинами. 
+      Он присоединяется к повстанцам, чтобы освободить человечество.&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section id="info"&gt;
+      &lt;h2&gt;Основная информация&lt;/h2&gt;
+      &lt;p&gt;&lt;strong&gt;Год выпуска:&lt;/strong&gt; 1999&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;Режиссеры:&lt;/strong&gt; Вачовски&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;Жанр:&lt;/strong&gt; Научная фантастика, боевик&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;Длительность:&lt;/strong&gt; 136 минут&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section id="actors"&gt;
+      &lt;h2&gt;Главные актеры&lt;/h2&gt;
+      &lt;ul&gt;
+        &lt;li&gt;Киану Ривз — Нео&lt;/li&gt;
+        &lt;li&gt;Лоренс Фишберн — Морфеус&lt;/li&gt;
+        &lt;li&gt;Кэрри-Энн Мосс — Тринити&lt;/li&gt;
+        &lt;li&gt;Хьюго Уивинг — Агент Смит&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;h2&gt;Почему стоит посмотреть&lt;/h2&gt;
+      &lt;ol&gt;
+        &lt;li&gt;Революционные спецэффекты&lt;/li&gt;
+        &lt;li&gt;Глубокий философский сюжет&lt;/li&gt;
+        &lt;li&gt;Культовые сцены боев&lt;/li&gt;
+        &lt;li&gt;Влияние на поп-культуру&lt;/li&gt;
+      &lt;/ol&gt;
+    &lt;/section&gt;
+
+    &lt;section id="poster"&gt;
+      &lt;h2&gt;Постер фильма&lt;/h2&gt;
+      &lt;img src="https://upload.wikimedia.org/wikipedia/ru/9/9d/Matrix-DVD.jpg" alt="Постер фильма Матрица" width="300"&gt;
+    &lt;/section&gt;
+
+    &lt;section id="links"&gt;
+      &lt;h2&gt;Дополнительная информация&lt;/h2&gt;
+      &lt;p&gt;&lt;a href="https://www.kinopoisk.ru/film/301/" target="_blank"&gt;Страница на Кинопоиске&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href="https://ru.wikipedia.org/wiki/Матрица_(фильм)" target="_blank"&gt;Статья в Википедии&lt;/a&gt;&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section&gt;
+      &lt;h2&gt;Бокс-офис&lt;/h2&gt;
+      &lt;table&gt;
+        &lt;tr&gt;&lt;th&gt;Страна&lt;/th&gt;&lt;th&gt;Сборы&lt;/th&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;США&lt;/td&gt;&lt;td&gt;$171 млн&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Мир&lt;/td&gt;&lt;td&gt;$467 млн&lt;/td&gt;&lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/section&gt;
+
+    &lt;section&gt;
+      &lt;h2&gt;Известная цитата&lt;/h2&gt;
+      &lt;blockquote&gt;
+        "Ты принимаешь синюю таблетку — история заканчивается, ты просыпаешься и веришь во что хочешь. 
+        Принимаешь красную — и я покажу, как глубока кроличья нора." &lt;br&gt;— &lt;em&gt;Морфеус&lt;/em&gt;
+      &lt;/blockquote&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;&lt;hr&gt;&lt;p&gt;© 2025 Учебный пример&lt;/p&gt;&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </section>
+
+    <div class="footer">© 2025 • Учебный курс «WebDev»</div>
+  </main>
+
+  <script>
+    // Кнопки "Копировать"
+    document.querySelectorAll('.codeblock .copy').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const code = btn.parentElement.querySelector('pre code').innerText;
+        navigator.clipboard.writeText(code).then(()=>{
+          const txt = btn.textContent;
+          btn.textContent = 'Скопировано!';
+          setTimeout(()=>btn.textContent = txt, 1600);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Домашнее задание — Homework 01 (Многостраничный сайт без CSS)</title>
+  <meta name="description" content="Задание HW01: структура проекта, требования к страницам, бонусы, процесс сдачи. Чистый HTML, без CSS и JS." />
+  <style>
+    :root{
+      --bg:#0b0c0f; --paper:#0f1218; --muted:#a9b3c1; --text:#e9eef5; --ink:#e9eef5;
+      --brand:#6ea8fe; --accent:#53df98; --warn:#ffb74d; --danger:#ff7a7a;
+      --border:#1f2430; --code:#0a0d12; --shadow:0 10px 30px rgba(0,0,0,.35);
+      --link:#8ab4ff;
+    }
+    @media (prefers-color-scheme: light){:root{
+      --bg:#f7f9fc; --paper:#ffffff; --muted:#4b5563; --text:#111827; --ink:#0b1220;
+      --brand:#2f6df6; --accent:#0ea5ab; --warn:#b45309; --danger:#d14343;
+      --border:#e5e7eb; --code:#f3f4f6; --link:#1d4ed8;
+    }}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0; background:var(--bg); color:var(--text); font:16px/1.65 system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif}
+    a{color:var(--link)}
+    header.site{position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(8px);
+      background:color-mix(in lab, var(--paper) 85%, transparent); border-bottom:1px solid var(--border)}
+    .container{max-width:1100px; margin:0 auto; padding:16px 20px}
+    .hero{display:flex; gap:16px; align-items:center}
+    .logo{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--accent));color:#fff;font-weight:800;box-shadow:var(--shadow)}
+    h1{margin:6px 0 2px; font-size:clamp(24px,3.6vw,36px)}
+    .muted{color:var(--muted)}
+    nav.toc{display:flex; flex-wrap:wrap; gap:10px; padding:8px 0 12px}
+    nav.toc a{text-decoration:none; color:var(--text); background:var(--paper); border:1px solid var(--border); padding:8px 12px; border-radius:10px; transition:.15s transform ease}
+    nav.toc a:hover{transform:translateY(-1px); box-shadow:var(--shadow)}
+    main{padding:24px 0 80px}
+    section{background:var(--paper); border:1px solid var(--border); border-radius:16px; padding:22px; margin:18px 0; box-shadow:var(--shadow)}
+    h2{margin:0 0 10px; font-size:clamp(20px,2.6vw,28px)}
+    h3{margin:12px 0 8px; color:var(--muted)}
+    .grid-2{display:grid; gap:16px}
+    @media (min-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
+    .pill{display:inline-flex; gap:8px; align-items:center; border:1px solid var(--border); background:var(--paper); padding:6px 10px; border-radius:999px; color:var(--muted)}
+    .badge{font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid var(--border); background:var(--paper); color:var(--muted)}
+    .checklist{list-style:none; padding-left:0}
+    .checklist li{margin:.35em 0}
+    .checklist input{transform:translateY(2px)}
+    pre{margin:0; overflow:auto; background:var(--code); border:1px solid var(--border); border-radius:12px; padding:14px}
+    code{font:13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space:pre}
+    .codeblock{position:relative; margin:10px 0 0}
+    .copy{position:absolute; right:10px; top:10px; border:1px solid var(--border); background:var(--paper); color:var(--text); border-radius:8px; padding:6px 10px; cursor:pointer}
+    table{width:100%; border-collapse:collapse; margin-top:10px}
+    th,td{border:1px solid var(--border); padding:8px; text-align:left}
+    details{border:1px dashed var(--border); background:color-mix(in lab, var(--paper) 92%, var(--bg)); padding:12px 14px; border-radius:12px; margin:12px 0}
+    blockquote{margin:10px 0; padding:12px 14px; border-left:4px solid var(--brand); background:color-mix(in lab, var(--paper) 92%, var(--bg)); border-radius:10px}
+    .warn{color:var(--warn)} .danger{color:var(--danger)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .breadcrumbs{font-size:14px; color:var(--muted)}
+  </style>
+</head>
+<body>
+  <a href="#main" class="sr-only">Перейти к содержимому</a>
+  <header class="site">
+    <div class="container">
+      <div class="hero">
+        <div class="logo">HW</div>
+        <div>
+          <div class="pill">Домашнее задание • HTML только (без CSS/JS)</div>
+          <h1>Homework 01 — Многостраничный сайт</h1>
+          <p class="muted">Создайте проект из 5 страниц на чистом HTML: главная, о себе, увлечения, галерея, контакты. Используйте семантические теги, единое меню и валидный HTML5.</p>
+        </div>
+      </div>
+      <nav class="toc" aria-label="Содержание">
+        <a href="#structure">Структура проекта</a>
+        <a href="#index">Главная</a>
+        <a href="#about">О себе</a>
+        <a href="#hobbies">Увлечения</a>
+        <a href="#gallery">Галерея</a>
+        <a href="#contacts">Контакты</a>
+        <a href="#requirements">Общие требования</a>
+        <a href="#mistakes">Частые ошибки</a>
+        <a href="#bonus">Бонусы</a>
+        <a href="#examples">Примеры</a>
+        <a href="#submission">Сдача</a>
+        <a href="#tips">Подсказки</a>
+        <a href="#template">Шаблон</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+
+    <section id="structure">
+      <h2>Структура проекта</h2>
+      <div class="codeblock">
+        <button class="copy" aria-label="Скопировать">Копировать</button>
+        <pre><code>homework-01/
+├── index.html          (главная страница)
+├── about.html          (о себе)
+├── hobbies.html        (увлечения)
+├── gallery.html        (галерея)
+└── contacts.html       (контакты)</code></pre>
+      </div>
+    </section>
+
+    <section id="index">
+      <div class="breadcrumbs">Раздел: Главная страница</div>
+      <h2>1) Главная страница (<code>index.html</code>)</h2>
+      <h3>Обязательные элементы</h3>
+      <ul class="checklist">
+        <li><label><input type="checkbox" disabled> Заголовок <code>&lt;h1&gt;</code> с вашим именем</label></li>
+        <li><label><input type="checkbox" disabled> Фотография (или аватар) с корректным <code>alt</code></label></li>
+        <li><label><input type="checkbox" disabled> Краткое описание (2–3 абзаца)</label></li>
+        <li><label><input type="checkbox" disabled> Навигационное меню со ссылками на все 5 страниц</label></li>
+        <li><label><input type="checkbox" disabled> Минимум 3 секции с разным контентом</label></li>
+      </ul>
+      <h3>Базовая структура</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Имя Фамилия - Главная&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;
+            &lt;!-- Меню --&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+    
+    &lt;main&gt;
+        &lt;section&gt; &lt;!-- Приветствие --&gt; &lt;/section&gt;
+        &lt;section&gt; &lt;!-- О себе кратко --&gt; &lt;/section&gt;
+        &lt;section&gt; &lt;!-- Мои интересы --&gt; &lt;/section&gt;
+    &lt;/main&gt;
+    
+    &lt;footer&gt; &lt;!-- Копирайт --&gt; &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="breadcrumbs">Раздел: О себе</div>
+      <h2>2) Страница «О себе» (<code>about.html</code>)</h2>
+      <h3>Обязательные элементы</h3>
+      <ul class="checklist">
+        <li><label><input type="checkbox" disabled> Заголовок страницы</label></li>
+        <li><label><input type="checkbox" disabled> Раздел «Образование» (список)</label></li>
+        <li><label><input type="checkbox" disabled> Раздел «Опыт работы» (если есть)</label></li>
+        <li><label><input type="checkbox" disabled> Раздел «Навыки» (маркированный список)</label></li>
+        <li><label><input type="checkbox" disabled> Раздел «Достижения» (нумерованный список)</label></li>
+        <li><label><input type="checkbox" disabled> Таблица с личной информацией</label></li>
+      </ul>
+      <h3>Пример таблицы</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;table&gt;
+  &lt;tr&gt; &lt;th&gt;Параметр&lt;/th&gt; &lt;th&gt;Значение&lt;/th&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;Возраст&lt;/td&gt; &lt;td&gt;20 лет&lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;Город&lt;/td&gt; &lt;td&gt;Москва&lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;Языки&lt;/td&gt; &lt;td&gt;Русский, English&lt;/td&gt; &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="hobbies">
+      <div class="breadcrumbs">Раздел: Увлечения</div>
+      <h2>3) Страница «Увлечения» (<code>hobbies.html</code>)</h2>
+      <h3>Обязательные элементы</h3>
+      <ul class="checklist">
+        <li><label><input type="checkbox" disabled> Минимум 3 хобби</label></li>
+        <li><label><input type="checkbox" disabled> Для каждого: <code>&lt;h2&gt;</code> + 1–2 абзаца описания</label></li>
+        <li><label><input type="checkbox" disabled> Изображение с <code>alt</code></label></li>
+        <li><label><input type="checkbox" disabled> Список причин «почему это нравится»</label></li>
+      </ul>
+      <h3>Дополнительно</h3>
+      <ul class="checklist">
+        <li><label><input type="checkbox" disabled> Ссылки на полезные ресурсы</label></li>
+        <li><label><input type="checkbox" disabled> Цитаты или интересные факты</label></li>
+      </ul>
+    </section>
+
+    <section id="gallery">
+      <div class="breadcrumbs">Раздел: Галерея</div>
+      <h2>4) Галерея (<code>gallery.html</code>)</h2>
+      <h3>Обязательные элементы</h3>
+      <ul class="checklist">
+        <li><label><input type="checkbox" disabled> Минимум 6 изображений</label></li>
+        <li><label><input type="checkbox" disabled> Подписи к каждому изображению</label></li>
+        <li><label><input type="checkbox" disabled> Группировка по темам</label></li>
+      </ul>
+      <h3>Структура секций галереи</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;section&gt;
+  &lt;h2&gt;Путешествия&lt;/h2&gt;
+  &lt;figure&gt;
+    &lt;img src="photo1.jpg" alt="Описание"&gt;
+    &lt;figcaption&gt;Подпись к фото&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;!-- Еще фото --&gt;
+&lt;/section&gt;
+
+&lt;section&gt;
+  &lt;h2&gt;Проекты&lt;/h2&gt;
+  &lt;!-- Фото проектов --&gt;
+&lt;/section&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="contacts">
+      <div class="breadcrumbs">Раздел: Контакты</div>
+      <h2>5) Контакты (<code>contacts.html</code>)</h2>
+      <h3>Обязательные элементы</h3>
+      <ul class="checklist">
+        <li><label><input type="checkbox" disabled> Форма обратной связи</label></li>
+        <li><label><input type="checkbox" disabled> Список способов связи</label></li>
+        <li><label><input type="checkbox" disabled> Ссылки на соцсети</label></li>
+        <li><label><input type="checkbox" disabled> Карта (допустимо изображение)</label></li>
+      </ul>
+      <h3>Шаблон формы</h3>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;form&gt;
+  &lt;div&gt;
+    &lt;label for="name"&gt;Ваше имя:&lt;/label&gt;
+    &lt;input type="text" id="name" name="name" required&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for="email"&gt;Email:&lt;/label&gt;
+    &lt;input type="email" id="email" name="email" required&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for="subject"&gt;Тема:&lt;/label&gt;
+    &lt;select id="subject" name="subject"&gt;
+      &lt;option&gt;Общий вопрос&lt;/option&gt;
+      &lt;option&gt;Предложение о работе&lt;/option&gt;
+      &lt;option&gt;Сотрудничество&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for="message"&gt;Сообщение:&lt;/label&gt;
+    &lt;textarea id="message" name="message" rows="5" required&gt;&lt;/textarea&gt;
+  &lt;/div&gt;
+  &lt;button type="submit"&gt;Отправить&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="requirements">
+      <h2>Общие требования</h2>
+      <h3>HTML-структура</h3>
+      <ol>
+        <li><strong>Валидный HTML5</strong> (проверьте на <a href="https://validator.w3.org/#validate_by_input" target="_blank" rel="noopener">validator.w3.org</a>).</li>
+        <li><strong>Семантические теги</strong> везде, где возможно.</li>
+        <li><strong>Правильная иерархия заголовков</strong> (один <code>h1</code> на страницу и далее <code>h2–h3</code>).</li>
+        <li><strong>Alt-атрибуты</strong> для всех изображений.</li>
+        <li><strong>Комментарии</strong> в коде для основных разделов.</li>
+      </ol>
+      <h3>Навигация</h3>
+      <ol>
+        <li><strong>Единое меню</strong> на всех страницах.</li>
+        <li><strong>Активная страница</strong> выделена (например, <code>class="active"</code> на ссылке).</li>
+        <li><strong>Хлебные крошки</strong> на внутренних страницах (например: Главная → Раздел).</li>
+      </ol>
+      <h3>Контент</h3>
+      <ol>
+        <li>Минимум <strong>300 слов</strong> на каждой странице.</li>
+        <li><strong>Разнообразные элементы</strong>: списки, таблицы, изображения, цитаты, ссылки, формы и т.д.</li>
+        <li>Реальная или правдоподобная информация.</li>
+      </ol>
+    </section>
+
+    <section id="mistakes">
+      <h2>Частые ошибки</h2>
+      <h3 class="danger">Что НЕ нужно делать</h3>
+      <ul>
+        <li>Подключать стили внутри HTML (в этом задании — без CSS).</li>
+        <li>Копировать чужой код без понимания.</li>
+        <li>Использовать устаревшие теги: <code>&lt;center&gt;</code>, <code>&lt;font&gt;</code> и т.п.</li>
+        <li>Оставлять Lorem Ipsum вместо реального текста.</li>
+        <li>Забывать закрывающие теги.</li>
+        <li>Использовать пробелы в именах файлов.</li>
+      </ul>
+      <h3 class="accent">Что НУЖНО делать</h3>
+      <ul>
+        <li>Проверять код в валидаторе.</li>
+        <li>Тестировать все ссылки.</li>
+        <li>Добавлять комментарии.</li>
+        <li>Использовать осмысленные имена файлов.</li>
+        <li>Организовать файлы в папки при необходимости.</li>
+      </ul>
+    </section>
+
+    <section id="bonus">
+      <h2>Бонусные задания</h2>
+      <ol>
+        <li><strong>Микроразметка</strong>: Schema.org, Open Graph теги.</li>
+        <li><strong>Доступность</strong>: ARIA-атрибуты, структура для скринридеров, <em>skip navigation link</em>.</li>
+        <li><strong>SVG-графика</strong>: простая SVG-иконка, inline SVG.</li>
+        <li><strong>Прогрессивное улучшение</strong>: сайт работает без CSS/JS/изображений.</li>
+      </ol>
+    </section>
+
+    <section id="examples">
+      <h2>Примеры для вдохновения</h2>
+      <ul>
+        <li><a href="https://developer.mozilla.org/" target="_blank" rel="noopener">MDN — Mozilla Developer Network</a></li>
+        <li><a href="https://alistapart.com/" target="_blank" rel="noopener">A List Apart</a></li>
+        <li><a href="https://css-tricks.com/" target="_blank" rel="noopener">CSS-Tricks</a></li>
+      </ul>
+      <h3>Где искать изображения</h3>
+      <ul>
+        <li><a href="https://unsplash.com/" target="_blank" rel="noopener">Unsplash</a> — бесплатные фото</li>
+        <li><a href="https://www.pexels.com/" target="_blank" rel="noopener">Pexels</a> — бесплатные фото</li>
+        <li><a href="https://placeholder.com/" target="_blank" rel="noopener">Placeholder.com</a> — заглушки</li>
+      </ul>
+    </section>
+
+    <section id="tips">
+      <h2>Подсказки</h2>
+      <h3>Начните с плана</h3>
+      <ol>
+        <li>Нарисуйте структуру на бумаге.</li>
+        <li>Составьте список контента.</li>
+        <li>Соберите материалы (тексты, фото).</li>
+        <li>Создайте базовую структуру файлов.</li>
+        <li>Постепенно добавляйте контент.</li>
+      </ol>
+    </section>
+
+    <section id="template">
+      <h2>Шаблон страницы</h2>
+      <div class="codeblock">
+        <button class="copy">Копировать</button>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;meta name="description" content="Описание страницы"&gt;
+  &lt;meta name="author" content="Ваше имя"&gt;
+  &lt;title&gt;Заголовок страницы&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Шапка сайта --&gt;
+  &lt;header&gt;
+    &lt;nav aria-label="Основное меню"&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href="index.html" class="active"&gt;Главная&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="about.html"&gt;О себе&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="hobbies.html"&gt;Увлечения&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="gallery.html"&gt;Галерея&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="contacts.html"&gt;Контакты&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/nav&gt;
+    &lt;nav aria-label="Хлебные крошки"&gt;
+      &lt;ol&gt;
+        &lt;li&gt;&lt;a href="index.html"&gt;Главная&lt;/a&gt;&lt;/li&gt;
+        &lt;li aria-current="page"&gt;Текущая страница&lt;/li&gt;
+      &lt;/ol&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;!-- Основное содержимое --&gt;
+  &lt;main id="content"&gt;
+    &lt;!-- Ваш контент здесь (минимум 300 слов) --&gt;
+  &lt;/main&gt;
+
+  &lt;!-- Подвал сайта --&gt;
+  &lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2025 Ваше имя. Все права защищены.&lt;/p&gt;
+  &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>FAQ</h2>
+      <details open>
+        <summary><strong>Можно ли использовать CSS?</strong></summary>
+        <p>В этом задании — нет. CSS будет в следующем.</p>
+      </details>
+      <details>
+        <summary><strong>Откуда брать картинки?</strong></summary>
+        <p>Свои фото или бесплатные стоки: Unsplash, Pexels. Допустимы заглушки Placeholder.</p>
+      </details>
+      <details>
+        <summary><strong>Что если не хочу писать о себе?</strong></summary>
+        <p>Можно сделать сайт о вымышленном персонаже, но соблюсти требования.</p>
+      </details>
+      <details>
+        <summary><strong>Сколько должно быть текста?</strong></summary>
+        <p>Минимум 300 слов на страницу.</p>
+      </details>
+      <details>
+        <summary><strong>Можно ли использовать JavaScript?</strong></summary>
+        <p>Нет, только HTML.</p>
+      </details>
+    </section>
+
+    <footer class="muted" style="text-align:center; padding:24px 0 6px">
+      © 2025 • Домашнее задание HW01 • Чистый HTML • Удачи!
+    </footer>
+  </main>
+
+  <script>
+    // Кнопки «Копировать»
+    document.querySelectorAll('.codeblock .copy').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const code = btn.parentElement.querySelector('pre code').innerText;
+        navigator.clipboard.writeText(code).then(()=>{
+          const t = btn.textContent; btn.textContent='Скопировано!';
+          setTimeout(()=>btn.textContent=t, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
