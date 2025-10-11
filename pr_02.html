@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pr_02 — Практическое занятие 2: стилизация «Матрицы»</title>
+  <meta name="description" content="Добавляем CSS-стили к странице про фильм Матрица, тема — киберпанк.">
+  <style>
+    :root{color-scheme: light dark}
+    body{font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;margin:0}
+    .container{max-width:980px;margin:0 auto;padding:20px}
+    header{margin-bottom:12px}
+    h1{margin:0 0 6px;font-size:clamp(22px,3.2vw,30px)}
+    h2{margin:18px 0 10px;font-size:clamp(18px,2.4vw,24px)}
+    h3{margin:14px 0 8px;font-size:clamp(16px,2vw,20px);color:gray}
+    p,li{max-width:80ch}
+    nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px}
+    nav.toc a{padding:6px 10px;border:1px solid #ccc;border-radius:8px;text-decoration:none}
+    section{border:1px solid #ddd;border-radius:12px;padding:16px;margin:14px 0}
+    pre{overflow:auto;background:#0a0a0a10;border:1px solid #ddd;border-radius:8px;padding:12px}
+    code{font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+    ul{padding-left:1.2em}
+    .muted{color:gray}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p class="muted">Практика • CSS</p>
+      <h1>Практическое занятие 2: стилизация страницы про фильм «Матрица»</h1>
+      <p>Цель: оформить существующий <code>index.html</code> про «Матрицу» в стиле киберпанк.</p>
+      <nav class="toc" aria-label="Содержание">
+        <a href="#prep">Подготовка</a>
+        <a href="#base">База и тема</a>
+        <a href="#header">Шапка</a>
+        <a href="#sections">Секции</a>
+        <a href="#lists">Списки</a>
+        <a href="#poster">Постер</a>
+        <a href="#links">Ссылки</a>
+        <a href="#footer">Футер</a>
+        <a href="#extra">Дополнительно</a>
+        <a href="#check">Чек-лист</a>
+        <a href="#resources">Ресурсы</a>
+      </nav>
+    </header>
+
+    <section id="prep">
+      <h2>Часть 1: Подготовка и исправление HTML</h2>
+      <h3>Исправленная разметка (подключаем CSS)</h3>
+      <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Матрица - культовый фильм 1999 года&lt;/title&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;header class="movie-header"&gt;
+      &lt;h1&gt;Матрица (The Matrix)&lt;/h1&gt;
+      &lt;p class="tagline"&gt;Культовый научно-фантастический фильм 1999 года.&lt;/p&gt;
+      &lt;nav class="main-nav"&gt;
+        &lt;a href="#description"&gt;Описание&lt;/a&gt;
+        &lt;a href="#info"&gt;Информация&lt;/a&gt;
+        &lt;a href="#actors"&gt;Актеры&lt;/a&gt;
+        &lt;a href="#poster"&gt;Постер&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+      &lt;section id="description" class="content-section"&gt;...&lt;/section&gt;
+      &lt;section id="info" class="content-section"&gt;...&lt;/section&gt;
+      &lt;section id="actors" class="content-section"&gt;...&lt;/section&gt;
+      &lt;section id="reasons" class="content-section"&gt;...&lt;/section&gt;
+      &lt;section id="poster" class="content-section"&gt;...&lt;/section&gt;
+      &lt;section id="links" class="content-section"&gt;...&lt;/section&gt;
+    &lt;/main&gt;
+
+    &lt;footer class="site-footer"&gt;
+      &lt;p&gt;© 2025 Страница создана в учебных целях&lt;/p&gt;
+    &lt;/footer&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+      <p>Создайте файл <strong>style.css</strong> рядом с <code>index.html</code>.</p>
+    </section>
+
+    <section id="base">
+      <h2>Часть 2: Базовые стили и тема «Матрица»</h2>
+      <pre><code>/* style.css (фрагмент) */
+:root {
+  --matrix-green:#00ff41; --matrix-dark-green:#008f11;
+  --matrix-bg:#0a0a0a; --matrix-bg-light:#1a1a1a;
+  --text-primary:#00ff41; --text-secondary:#ffffff; --text-muted:#888;
+  --accent:#ff0040; --border-color:#00ff4133;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Courier New',monospace; background:var(--matrix-bg); color:var(--text-secondary); line-height:1.6;
+  background-image:repeating-linear-gradient(0deg,rgba(0,255,65,.03),rgba(0,255,65,.03)1px,transparent 1px,transparent 2px);
+}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+@keyframes glow{0%,100%{text-shadow:0 0 5px var(--matrix-green),0 0 10px var(--matrix-green),0 0 15px var(--matrix-dark-green)}50%{text-shadow:0 0 10px var(--matrix-green),0 0 20px var(--matrix-green),0 0 30px var(--matrix-dark-green)}} </code></pre>
+    </section>
+
+    <section id="header">
+      <h2>Часть 3: Стилизация шапки</h2>
+      <pre><code>/* Шапка */
+.movie-header{ text-align:center; padding:40px 0; background:linear-gradient(135deg,var(--matrix-bg),var(--matrix-bg-light));
+  border:1px solid var(--border-color); border-radius:10px; margin-bottom:30px; position:relative; overflow:hidden; }
+.movie-header::before{ content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent,rgba(0,255,65,.1) 50%,transparent);
+  animation:matrix-rain 3s linear infinite; }
+@keyframes matrix-rain{ from{transform:translateY(-100%)} to{transform:translateY(100%)} }
+.movie-header h1{ font-size:3em; color:var(--matrix-green); margin-bottom:10px; letter-spacing:3px; animation:glow 2s ease-in-out infinite; position:relative; z-index:1 }
+.tagline{ color:var(--text-muted); margin-bottom:30px; position:relative; z-index:1 }
+.main-nav{ display:flex; justify-content:center; gap:20px; flex-wrap:wrap; position:relative; z-index:1 }
+.main-nav a{ color:var(--text-secondary); text-decoration:none; padding:10px 20px; border:1px solid var(--matrix-green); border-radius:5px; background:rgba(0,255,65,.05); transition:.3s }
+.main-nav a:hover{ background:var(--matrix-green); color:var(--matrix-bg); transform:scale(1.05); box-shadow:0 0 20px var(--matrix-green) }</code></pre>
+    </section>
+
+    <section id="sections">
+      <h2>Часть 4: Секции контента</h2>
+      <pre><code>.content-section{ background:var(--matrix-bg-light); border:1px solid var(--border-color); border-radius:10px; padding:30px; margin-bottom:30px; position:relative }
+.content-section::before{ content:'>'; position:absolute; top:30px; left:10px; color:var(--matrix-green); animation:blink 1s infinite }
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.content-section h2{ color:var(--matrix-green); font-size:1.8em; margin-bottom:20px; padding-left:20px; border-left:3px solid var(--matrix-green) }
+.info-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; margin-top:20px }
+.info-item{ padding:15px; background:var(--matrix-bg); border:1px solid var(--border-color); border-radius:5px; transition:.3s; display:flex; flex-direction:column }
+.info-item:hover{ transform:translateY(-5px); border-color:var(--matrix-green) }
+.label{ color:var(--matrix-green); font-size:.9em; margin-bottom:5px; text-transform:uppercase }
+.value{ font-weight:700 }</code></pre>
+    </section>
+
+    <section id="lists">
+      <h2>Часть 5: Списки</h2>
+      <pre><code>.actors-list{ list-style:none; padding:0 }
+.actors-list li{ padding:15px; margin-bottom:10px; background:var(--matrix-bg); border-left:3px solid var(--matrix-green); transition:.3s }
+.actors-list li::before{ content:'//'; color:var(--matrix-green); margin-right:10px }
+.actors-list li:hover{ background:rgba(0,255,65,.1); transform:translateX(10px) }
+.actor-name{ color:var(--matrix-green); font-weight:700 }
+.reasons-list{ list-style:none; padding:0; counter-reset:reason }
+.reasons-list li{ counter-increment:reason; padding:15px 15px 15px 50px; margin-bottom:15px; background:var(--matrix-bg); border:1px solid var(--border-color); border-radius:5px; position:relative; transition:.3s }
+.reasons-list li::before{ content:counter(reason, decimal-leading-zero); position:absolute; left:15px; color:var(--matrix-green); font-weight:700; font-size:1.5em }
+.reasons-list li:hover{ background:rgba(0,255,65,.05); border-color:var(--matrix-green); transform:translateX(5px) }</code></pre>
+    </section>
+
+    <section id="poster">
+      <h2>Часть 6: Постер</h2>
+      <pre><code>.poster-container{text-align:center; padding:20px; background:var(--matrix-bg); border-radius:10px}
+.movie-poster{ max-width:100%; height:auto; border:2px solid var(--matrix-green); border-radius:10px;
+  box-shadow:0 0 20px rgba(0,255,65,.5),0 0 40px rgba(0,255,65,.3); transition:.3s }
+.movie-poster:hover{ transform:scale(1.05); box-shadow:0 0 30px rgba(0,255,65,.7),0 0 60px rgba(0,255,65,.4) }</code></pre>
+    </section>
+
+    <section id="links">
+      <h2>Часть 7: Ссылки</h2>
+      <pre><code>.links-container{ display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin-top:20px }
+.external-link{ position:relative; display:inline-block; padding:15px 30px; background:var(--matrix-bg); color:var(--text-secondary); text-decoration:none; border:2px solid var(--matrix-green); border-radius:5px; overflow:hidden; transition:.3s }
+.external-link::before{ content:''; position:absolute; inset:0; left:-100%; background:var(--matrix-green); transition:left .3s }
+.external-link:hover::before{ left:0 }
+.external-link:hover{ color:var(--matrix-bg); transform:scale(1.05); box-shadow:0 5px 20px rgba(0,255,65,.5) }</code></pre>
+    </section>
+
+    <section id="footer">
+      <h2>Часть 8: Футер и адаптивность</h2>
+      <pre><code>.site-footer{ margin-top:50px; padding:30px; text-align:center; border-top:1px solid var(--border-color); background:linear-gradient(180deg,transparent,rgba(0,255,65,.05))}
+.site-footer p{ color:var(--text-muted); font-size:.9em }
+@media (max-width:768px){
+  .movie-header h1{font-size:2em}
+  .main-nav{flex-direction:column; align-items:center}
+  .main-nav a{width:200px; text-align:center}
+  .info-grid{grid-template-columns:1fr}
+}
+.movie-header h1:hover{ animation:glitch .3s infinite }
+@keyframes glitch{0%{text-shadow:.05em 0 0 var(--accent), -.05em -.025em 0 var(--matrix-green), .025em .05em 0 var(--matrix-dark-green)} 49%{text-shadow:-.05em -.025em 0 var(--accent), .025em .025em 0 var(--matrix-green), -.05em -.05em 0 var(--matrix-dark-green)} 100%{text-shadow:-.025em 0 0 var(--accent), -.025em -.025em 0 var(--matrix-green), -.025em -.05em 0 var(--matrix-dark-green)}} </code></pre>
+    </section>
+
+    <section id="extra">
+      <h2>Дополнительно</h2>
+      <pre><code>/* Фон «матрикс-дождя» */
+.matrix-bg{ position:fixed; inset:0; z-index:-1; opacity:.1; overflow:hidden }
+.matrix-bg::before{ content:'1010101010101010'; position:absolute; color:var(--matrix-green); font-size:20px; animation:fall 5s linear infinite }
+@keyframes fall{ from{transform:translateY(-100vh)} to{transform:translateY(100vh)} }</code></pre>
+      <pre><code>&lt;script&gt;
+document.querySelectorAll('a, button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>console.log('Matrix sound effect!'));
+});
+&lt;/script&gt;</code></pre>
+    </section>
+
+    <section id="check">
+      <h2>Проверочный чек-лист</h2>
+      <ul>
+        <li>CSS подключен, тема применена, навигация и списки стилизованы.</li>
+        <li>Постер со свечением, ссылки с анимацией, адаптивность проверена.</li>
+        <li>Анимации: glow / matrix-rain и др. работают.</li>
+        <li>Читаемость текста ок, секции визуально разделены.</li>
+      </ul>
+    </section>
+
+    <section id="resources">
+      <h2>Полезные ресурсы</h2>
+      <ul>
+        <li>CSS Glow / генераторы, «Matrix digital rain» примеры, киберпанк-эффекты на CodePen / FreeFrontend.</li>
+        <li>Google Fonts (например, <code>Orbitron</code> для заголовков).</li>
+      </ul>
+    </section>
+
+  </div>
+</body>
+</html>
